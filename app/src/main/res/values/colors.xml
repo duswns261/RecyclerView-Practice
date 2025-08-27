@@ -5,10 +5,9 @@
     
     <!-- 앱 테마 색상 -->
     <color name="background_dark">#FFF5F5F5</color>
-    <color name="card_background">#FFFFFFFF</color>
+    <color name="text_control_button">#201A1A</color>
+    <color name="rounded_list_background">#FFFFFF</color>
     <color name="text_primary">#FF333333</color>
     <color name="text_secondary">#FF666666</color>
     <color name="divider">#FFEEEEEE</color>
-    <color name="accent_color">#FF6C7B7F</color>
-    <color name="delete_color">#FF8E8E93</color>
 </resources>

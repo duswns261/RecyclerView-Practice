@@ -10,8 +10,8 @@ class MainActivity : AppCompatActivity() {
     
     private lateinit var binding: ActivityMainBinding
     
-    private lateinit var adapterA: ItemAdapter
-    private lateinit var adapterB: ItemAdapter
+    private lateinit var adapterOfAList: ItemAdapter
+    private lateinit var adapterOfBList: ItemAdapter
     
     private var itemCounter = 0
     private var currentToast: Toast? = null
@@ -27,21 +27,21 @@ class MainActivity : AppCompatActivity() {
     
     private fun setupRecyclerViews() {
         // A 리스트 설정
-        adapterA = ItemAdapter(mutableListOf()) { item ->
+        adapterOfAList = ItemAdapter(mutableListOf()) { item ->
             // A 리스트 아이템 클릭 시 B 리스트로 이동
             moveItemToB(item)
         }
         binding.recyclerViewA.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = adapterA
+            adapter = adapterOfAList
             addItemDecoration(CustomDividerItemDecoration(this@MainActivity))
         }
         
         // B 리스트 설정
-        adapterB = ItemAdapter(mutableListOf())
+        adapterOfBList = ItemAdapter(mutableListOf())
         binding.recyclerViewB.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = adapterB
+            adapter = adapterOfBList
             addItemDecoration(CustomDividerItemDecoration(this@MainActivity))
         }
     }
@@ -58,32 +58,32 @@ class MainActivity : AppCompatActivity() {
     
     private fun addNewItemToA() {
         val newItem = Item(itemCounter, "아이템 $itemCounter")
-        adapterA.addItem(newItem)
+        adapterOfAList.addItem(newItem)
         itemCounter++
-        showToast("A 리스트에 새 아이템이 추가되었습니다")
+        showToast("A 리스트에 ${newItem.id}번 아이템이 추가되었습니다")
     }
     
     private fun moveItemToB(item: Item) {
         // A 리스트에서 아이템 제거
-        val itemsA = adapterA.getItems().toMutableList()
+        val itemsA = adapterOfAList.getItems().toMutableList()
         itemsA.remove(item)
         
         // A 어댑터 새로고침
-        adapterA = ItemAdapter(itemsA) { clickedItem ->
+        adapterOfAList = ItemAdapter(itemsA) { clickedItem ->
             moveItemToB(clickedItem)
         }
-        binding.recyclerViewA.adapter = adapterA
+        binding.recyclerViewA.adapter = adapterOfAList
         
         // B 리스트에 아이템 추가
-        adapterB.addItem(item)
+        adapterOfBList.addItem(item)
         
-        showToast("아이템이 B 리스트로 이동되었습니다")
+        showToast("${item.id}번 아이템이 B 리스트로 이동되었습니다")
     }
     
     private fun removeFirstItemFromB() {
-        val removedItem = adapterB.removeFirstItem()
+        val removedItem = adapterOfBList.removeFirstItem()
         if (removedItem != null) {
-            showToast("B 리스트에서 아이템이 삭제되었습니다")
+            showToast("B 리스트에서 ${removedItem.id}번 아이템이 삭제되었습니다")
         } else {
             showToast("B 리스트가 비어있습니다")
         }
