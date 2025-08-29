@@ -14,5 +14,5 @@
 ### 프로젝트 수정 사항
  - Vibe Coding(Cursor Editor)를 통해 기능 구현 완료
  - UI 수정 및 리사이클러뷰 라이프 사이클 확인
- - 확장 가능성과 휴먼 에러를 고려하기 위한 ListAdapter & DiffUtil 적용(진행중)
+ - 확장 가능성과 휴먼 에러를 고려하기 위한 ListAdapter & DiffUtil 적용
  - Jetpack Compose UI 적용(진행중)
