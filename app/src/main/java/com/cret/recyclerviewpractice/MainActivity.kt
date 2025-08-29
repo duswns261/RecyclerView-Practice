@@ -83,29 +83,34 @@ class MainActivity : AppCompatActivity() {
             1 -> ImageItem(itemCounter, R.drawable.baseline_account_circle_24)
             else -> TextImageItem(itemCounter, getString(R.string.with_text), R.drawable.baseline_account_circle_24)
         }
-        adapterOfAList.addItem(newItem)
         itemCounter++
+
+        listA += newItem
+        adapterOfAList.submitList(listA.toList())
         showToast("A 리스트에 ${newItem.id}번 아이템이 추가되었습니다")
     }
     
     private fun moveItemToBList(item: UiItem) {
-
-        //A 리스트에서 아이템 제거
-        adapterOfAList.removeItem(item)
-
-        // B 리스트에 아이템 추가
-        adapterOfBList.addItem(item)
+        val removed = listA.remove(item)
+        if (removed) {
+            listB += item
+            adapterOfAList.submitList(listA.toList())
+            adapterOfBList.submitList(listB.toList())
+        }
         
         showToast("${item.id}번 아이템이 B 리스트로 이동되었습니다")
     }
     
     private fun removeFirstItemFromBList() {
-        val removedItem = adapterOfBList.removeFirstItem()
-        if (removedItem != null) {
-            showToast("B 리스트에서 ${removedItem.id}번 아이템이 삭제되었습니다")
-        } else {
+        if (listB.isEmpty()) {
             showToast("B 리스트가 비어있습니다")
+            return
         }
+
+        val removedItemId = listB[0].id
+        listB.removeAt(0)
+        adapterOfBList.submitList(listB.toList())
+        showToast("B 리스트에서 ${removedItemId}번 아이템이 삭제되었습니다")
     }
     
     private fun showToast(message: String) {

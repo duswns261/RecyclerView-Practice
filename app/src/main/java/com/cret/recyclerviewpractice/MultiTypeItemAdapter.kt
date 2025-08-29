@@ -3,6 +3,8 @@ package com.cret.recyclerviewpractice
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cret.recyclerviewpractice.databinding.ItemImageBinding
 import com.cret.recyclerviewpractice.databinding.ItemTextBinding
@@ -10,10 +12,25 @@ import com.cret.recyclerviewpractice.databinding.ItemTextImageBinding
 
 class MultiTypeItemAdapter(
     private val items: MutableList<UiItem>,
-    private val onItemClick: ((UiItem) -> Unit)? = null
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val onItemClick: ((UiItem) -> Unit)? = null,
+) : ListAdapter<UiItem, RecyclerView.ViewHolder>(DIFF) {
 
-    init { setHasStableIds(true) }
+    companion object {
+        private val DIFF = object : DiffUtil.ItemCallback<UiItem>() {
+            override fun areItemsTheSame(
+                oldItem: UiItem,
+                newItem: UiItem
+            ): Boolean =
+                (oldItem.id == newItem.id) && (oldItem::class == newItem::class)
+
+            override fun areContentsTheSame(
+                oldItem: UiItem,
+                newItem: UiItem
+            ): Boolean =
+                oldItem == newItem
+        }
+    }
+
 
     class TextItemViewHolder(binding: ItemTextBinding) : RecyclerView.ViewHolder(binding.root) {
         val text = binding.textOnly
@@ -94,32 +111,4 @@ class MultiTypeItemAdapter(
         is ImageItem -> R.layout.item_image
         is TextImageItem -> R.layout.item_text_image
     }
-
-    fun addItem(item: UiItem): Int {
-        items.add(item)
-        val position = items.lastIndex
-        notifyItemInserted(position)
-        return position
-    }
-
-    // B리스트에서 REMOVE 버튼 클릭 시 첫 번째 아이템 삭제
-    fun removeFirstItem(): UiItem? {
-        return if (items.isNotEmpty()) {
-            val removedItem = items.removeAt(0)
-            notifyItemRemoved(0)
-            removedItem
-        } else null
-    }
-
-    // A리스트에서 선택한 아이템 삭제
-    fun removeItem(item: UiItem): Int {
-        val position = items.indexOf(item)
-        if (position != -1) {
-            items.removeAt(position)
-            notifyItemRemoved(position)
-        }
-        return position
-    }
-
-    fun getItems(): List<UiItem> = items
 }
