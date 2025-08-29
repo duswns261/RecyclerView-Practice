@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">RecyclerViewPractice</string>
+
+    <string name="only_text">텍스트만 존재</string>
+    <string name="with_text">텍스트와 이미지 존재</string>
 </resources>

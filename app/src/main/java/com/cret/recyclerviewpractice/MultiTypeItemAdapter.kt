@@ -15,12 +15,6 @@ class MultiTypeItemAdapter(
 
     init { setHasStableIds(true) }
 
-    companion object {
-        private const val TEXT_TYPE = 0
-        private const val IMAGE_TYPE = 1
-        private const val TEXT_IMAGE_TYPE = 2
-    }
-
     class TextItemViewHolder(binding: ItemTextBinding) : RecyclerView.ViewHolder(binding.root) {
         val text = binding.textOnly
     }
@@ -41,9 +35,9 @@ class MultiTypeItemAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflate = LayoutInflater.from(parent.context)
         return when (viewType) {
-            TEXT_TYPE -> TextItemViewHolder(ItemTextBinding.inflate(inflate, parent, false))
-            IMAGE_TYPE -> ImageItemViewHolder(ItemImageBinding.inflate(inflate, parent, false))
-            TEXT_IMAGE_TYPE -> TextImageItemViewHolder(ItemTextImageBinding.inflate(inflate, parent, false))
+            R.layout.item_text -> TextItemViewHolder(ItemTextBinding.inflate(inflate, parent, false))
+            R.layout.item_image -> ImageItemViewHolder(ItemImageBinding.inflate(inflate, parent, false))
+            R.layout.item_text_image -> TextImageItemViewHolder(ItemTextImageBinding.inflate(inflate, parent, false))
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -62,7 +56,7 @@ class MultiTypeItemAdapter(
             is ImageItemViewHolder -> holder.image.setBackgroundResource((item as ImageItem).imageResId)
             is TextImageItemViewHolder -> {
                 holder.text.text = (item as TextImageItem).text
-                holder.image.setBackgroundResource((item as TextImageItem).imageResId)
+                holder.image.setImageResource((item as TextImageItem).imageResId)
             }
         }
     }
@@ -96,9 +90,9 @@ class MultiTypeItemAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun getItemViewType(position: Int): Int = when (items[position]) {
-        is TextItem -> TEXT_TYPE
-        is ImageItem -> IMAGE_TYPE
-        is TextImageItem -> TEXT_IMAGE_TYPE
+        is TextItem -> R.layout.item_text
+        is ImageItem -> R.layout.item_image
+        is TextImageItem -> R.layout.item_text_image
     }
 
     fun addItem(item: UiItem): Int {

@@ -79,9 +79,9 @@ class MainActivity : AppCompatActivity() {
     private fun addRandomItemToAList() {
         val type = Random.nextInt(3)
         val newItem = when (type) {
-            0 -> TextItem(itemCounter, "텍스트만 존재")
+            0 -> TextItem(itemCounter, getString(R.string.only_text))
             1 -> ImageItem(itemCounter, R.drawable.baseline_account_circle_24)
-            else -> TextImageItem(itemCounter, "텍스트와 이미지 존재", R.drawable.baseline_account_circle_24)
+            else -> TextImageItem(itemCounter, getString(R.string.with_text), R.drawable.baseline_account_circle_24)
         }
         adapterOfAList.addItem(newItem)
         itemCounter++
